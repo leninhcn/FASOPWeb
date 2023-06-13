@@ -147,6 +147,7 @@ export default {
     margin: {
       left: 40px;
       bottom: 5px;
+      right: 0;
     }
   }
   .Stamp {
