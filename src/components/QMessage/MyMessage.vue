@@ -41,7 +41,7 @@
     <div class="msgImg" v-if="msgType === 'img'">
       <img :src="noIMG" alt="" />
     </div>
-    <span class="Stamp">5 minutes ago</span>
+    <span class="Stamp">{{ stamp }}</span>
   </div>
 </template>
 
@@ -70,8 +70,12 @@ export default {
     Owner: {
       type: Boolean,
       required: false,
-      default: true,
-    },
+      default: false,
+    },stamp:{
+      type:String,
+      required:false,
+      default:'5 minutes ago'
+    }
   },
   data() {
     return {
@@ -99,9 +103,9 @@ export default {
 
   .avatar {
     position: absolute;
-    width: 30px;
-    height: 30px;
-    bottom: 0;
+    width: 40px;
+    height: 40px;
+    bottom: 2px;
     img {
       width: inherit;
       height: inherit;
@@ -111,7 +115,7 @@ export default {
   .Sender {
     color: #000;
     margin: {
-      left: 40px;
+      left: 45px;
     }
   }
   $msg-bg-color: #b0bec5;
@@ -126,7 +130,7 @@ export default {
       left: -10px;
       width: 0;
       height: 0;
-      border-bottom: 5px solid $msg-bg-color;
+      border-bottom: 8px solid $msg-bg-color;
       border-left: 15px solid transparent;
     }
   }
@@ -145,14 +149,14 @@ export default {
       right: 5px;
     }
     margin: {
-      left: 40px;
+      left: 45px;
       bottom: 5px;
       right: 0;
     }
   }
   .Stamp {
     float: left;
-    margin-left: 40px;
+    margin-left: 45px;
     font-size: x-small;
   }
 }
@@ -202,7 +206,7 @@ export default {
       right: -10px;
       width: 0;
       height: 0;
-      border-bottom: 5px solid $msg-bg-color;
+      border-bottom: 8px solid $msg-bg-color;
       border-right: 15px solid transparent;
     }
   }
