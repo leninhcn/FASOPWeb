@@ -1,47 +1,50 @@
 <template>
-  <div v-if="!Owner" class="container">
-    <div class="avatar shadow-8">
-      <img :src="noIMG" alt="" />
-    </div>
-    <span class="Sender">{{ sender }}</span>
-    <div v-if="msgType === 'text'">
-      <div v-for="(msg, id) in messages" :key="id">
-        <div
-          class="msgText shadow-8"
-          :class="{
-            lastMSG: id == messages.length - 1,
-          }"
-        >
-          {{ msg }}
+  <div class="classBo">
+    <div v-if="!Owner" class="container">
+      <div class="avatar shadow-8">
+        <img :src="noIMG" alt="" />
+      </div>
+      <span class="Sender">{{ sender }}</span>
+      <div v-if="msgType === 'text'">
+        <div v-for="(msg, id) in messages" :key="id">
+          <div
+            class="msgText shadow-8"
+            :class="{
+              lastMSG: id == messages.length - 1,
+            }"
+          >
+            {{ msg.text }}
+          </div>
         </div>
       </div>
+      <div class="msgImg" v-if="msgType === 'img'">
+        <img :src="noIMG" alt="" />
+      </div>
+      <span class="Stamp">5 minutes ago</span>
     </div>
-    <div class="msgImg" v-if="msgType === 'img'">
-      <img :src="noIMG" alt="" />
-    </div>
-    <span class="Stamp">5 minutes ago</span>
-  </div>
-  <div v-if="Owner" class="OwnerContainer">
-    <div class="avatar shadow-8">
-      <img :src="noIMG" alt="" />
-    </div>
-    <span class="Sender">{{ sender }}</span>
-    <div v-if="msgType === 'text'">
-      <div v-for="(msg, id) in messages" :key="id">
-        <div
-          class="msgText shadow-8"
-          :class="{
-            lastMSG: id == messages.length - 1,
-          }"
-        >
-          {{ msg }}
+
+    <div v-if="Owner" class="OwnerContainer">
+      <div class="avatar shadow-8">
+        <img :src="noIMG" alt="" />
+      </div>
+      <span class="Sender">{{ sender }}</span>
+      <div v-if="msgType === 'text'">
+        <div v-for="(msg, id) in messages" :key="id">
+          <div
+            class="msgText shadow-8"
+            :class="{
+              lastMSG: id == messages.length - 1,
+            }"
+          >
+            {{ msg.text }}
+          </div>
         </div>
       </div>
+      <div class="msgImg" v-if="msgType === 'img'">
+        <img :src="noIMG" alt="" />
+      </div>
+      <span class="Stamp">{{ stamp }}</span>
     </div>
-    <div class="msgImg" v-if="msgType === 'img'">
-      <img :src="noIMG" alt="" />
-    </div>
-    <span class="Stamp">{{ stamp }}</span>
   </div>
 </template>
 
@@ -52,9 +55,11 @@ export default {
       type: Array,
       required: false,
       default: () => [
-        "m1",
-        "m2",
-        "m3aaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        { text: "m1" },
+        { text: "m2" },
+        {
+          text: "m3aaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        },
       ],
     },
     sender: {
@@ -71,11 +76,12 @@ export default {
       type: Boolean,
       required: false,
       default: false,
-    },stamp:{
-      type:String,
-      required:false,
-      default:'5 minutes ago'
-    }
+    },
+    stamp: {
+      type: String,
+      required: false,
+      default: "5 minutes ago",
+    },
   },
   data() {
     return {
@@ -86,6 +92,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.classBo {
+  margin: {
+    top: 30px;
+  };
+}
 .container {
   position: relative;
   text-align: left;
@@ -105,7 +116,7 @@ export default {
     position: absolute;
     width: 40px;
     height: 40px;
-    bottom: 2px;
+    bottom: 0;
     img {
       width: inherit;
       height: inherit;
@@ -113,27 +124,12 @@ export default {
     }
   }
   .Sender {
-    color: #000;
+    color: #809c00;
     margin: {
       left: 45px;
     }
   }
   $msg-bg-color: #b0bec5;
-  .lastMSG {
-    padding: {
-      bottom: 3px;
-    }
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: -10px;
-      width: 0;
-      height: 0;
-      border-bottom: 8px solid $msg-bg-color;
-      border-left: 15px solid transparent;
-    }
-  }
   .msgText {
     background-color: $msg-bg-color;
     color: white;
@@ -147,11 +143,30 @@ export default {
     padding: {
       left: 5px;
       right: 5px;
+      top: 5px;
+      bottom: 5px;
     }
     margin: {
       left: 45px;
       bottom: 5px;
       right: 0;
+    }
+  }
+  
+  .lastMSG {
+    padding: {
+      top: 15px;
+      bottom: 15px;
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: -10px;
+      width: 0;
+      height: 0;
+      border-bottom: 8px solid $msg-bg-color;
+      border-left: 15px solid transparent;
     }
   }
   .Stamp {
@@ -180,7 +195,7 @@ export default {
     position: absolute;
     width: 40px;
     height: 40px;
-    bottom: 3px;
+    bottom: 0;
     right: 0;
     img {
       width: inherit;
@@ -190,26 +205,11 @@ export default {
   }
   .Sender {
     position: absolute;
-    color: #000;
+    color: #ebff38;
     top: -20px;
     right: 48px;
   }
   $msg-bg-color: rgb(17, 0, 255);
-  .lastMSG {
-    padding: {
-      bottom: 3px;
-    }
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      right: -10px;
-      width: 0;
-      height: 0;
-      border-bottom: 8px solid $msg-bg-color;
-      border-right: 15px solid transparent;
-    }
-  }
   .msgText {
     background-color: $msg-bg-color;
     color: white;
@@ -223,11 +223,29 @@ export default {
     padding: {
       left: 5px;
       right: 5px;
+      top: 5px;
+      bottom: 5px;
     }
     margin: {
       left: auto;
       right: 45px;
       top: 3px;
+    }
+  }
+  .lastMSG {
+    padding: {
+      top: 15px;
+      bottom: 15px;
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      right: -10px;
+      width: 0;
+      height: 0;
+      border-bottom: 8px solid $msg-bg-color;
+      border-right: 15px solid transparent;
     }
   }
   .Stamp {

@@ -11,7 +11,7 @@
       @scroll="onHisScroll"
     >
       <div class="q-pa-md row justify-center">
-        <div style="width: 100%">
+        <div style="width: 100%;">
           <Qmsg
             v-for="(msg, id) in ChatHis"
             :key="id"

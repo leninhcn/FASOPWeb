@@ -1,5 +1,5 @@
 <template>
-  <q-chat-message
+  <!-- <q-chat-message
     :name="Name"
     :avatar="MemberInfo ? imageFromByte(MemberInfo.AVATAR) : noIMG"
     :stamp="GenStampTime(Stamp)"
@@ -12,16 +12,28 @@
       {{ msg.text }}
       <img v-if="msg.icon" :src="imageFromByte(msg.icon)" class="my-emoticon" />
     </div>
-  </q-chat-message>
+  </q-chat-message> -->
+  <div>
+    <MyMSG
+      :messages="Message"
+      msgType="text"
+      :Owner="Sent"
+      :sender="Name"
+      :stamp="GenStampTime(Stamp)"
+    ></MyMSG>
+  </div>
 </template>
 
 <script>
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
-
+import MyMSG from "./MyMessage.vue";
 export default {
   name: "qmsg-1",
+  components: {
+    MyMSG,
+  },
   props: {
     Name: {
       type: String,
@@ -87,6 +99,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.container {
+  margin: {
+    top: 35px;
+  };
+}
 .my-emoticon {
   vertical-align: middle;
   height: 2em;
