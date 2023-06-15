@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import TestCom from './QMessage/MyMessage.vue'
+import TestCom from './QMessage/MyTextBox.vue'
 export default {
 components:{
   TestCom
