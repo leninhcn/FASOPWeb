@@ -2,7 +2,7 @@
   <div class="classBo">
     <div v-if="!Owner" class="container">
       <div class="avatar shadow-8">
-        <img :src="noIMG" alt="" />
+        <img :src="avatar" alt="" />
       </div>
       <span class="Sender">{{ sender }}</span>
       <div v-if="msgType === 'text'">
@@ -18,14 +18,14 @@
         </div>
       </div>
       <div class="msgImg" v-if="msgType === 'img'">
-        <img :src="noIMG" alt="" />
+        <img :src="avatar" alt="" />
       </div>
-      <span class="Stamp">5 minutes ago</span>
+      <span class="Stamp">{{ stamp }}</span>
     </div>
 
     <div v-if="Owner" class="OwnerContainer">
       <div class="avatar shadow-8">
-        <img :src="noIMG" alt="" />
+        <img :src="avatar" alt="" />
       </div>
       <span class="Sender">{{ sender }}</span>
       <div v-if="msgType === 'text'">
@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="msgImg" v-if="msgType === 'img'">
-        <img :src="noIMG" alt="" />
+        <img :src="avatar" alt="" />
       </div>
       <span class="Stamp">{{ stamp }}</span>
     </div>
@@ -82,10 +82,15 @@ export default {
       required: false,
       default: "5 minutes ago",
     },
+    avatar: {
+      type: String,
+      required: false,
+      default: "",
+    },
   },
   data() {
     return {
-      noIMG: `${this.axios.defaults.baseURL}Images/noImg.png`,
+      noIMG: `${this.axios.defaults.baseURL}Images/noIMG.png`,
     };
   },
 };
@@ -95,7 +100,7 @@ export default {
 .classBo {
   margin: {
     top: 30px;
-  };
+  }
 }
 .container {
   position: relative;
@@ -138,7 +143,7 @@ export default {
     border-radius: 3px 3px 3px 0;
     word-wrap: break-word;
     max-width: 550px;
-    min-width: 30px;
+    min-width: 20px;
     text-align: left;
     padding: {
       left: 5px;
@@ -152,7 +157,7 @@ export default {
       right: 0;
     }
   }
-  
+
   .lastMSG {
     padding: {
       top: 15px;
@@ -217,7 +222,7 @@ export default {
     position: relative;
     border-radius: 3px 3px 0 3px;
     max-width: 550px;
-    min-width: 50px;
+    min-width: 20px;
     word-wrap: break-word;
     text-align: left;
     padding: {

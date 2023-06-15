@@ -1,18 +1,4 @@
 <template>
-  <!-- <q-chat-message
-    :name="Name"
-    :avatar="MemberInfo ? imageFromByte(MemberInfo.AVATAR) : noIMG"
-    :stamp="GenStampTime(Stamp)"
-    :sent="Sent"
-    :text-color="TextColor"
-    :bg-color="BGColor"
-    :size="msg_size"
-  >
-    <div v-for="(msg, id) in Message" :key="id">
-      {{ msg.text }}
-      <img v-if="msg.icon" :src="imageFromByte(msg.icon)" class="my-emoticon" />
-    </div>
-  </q-chat-message> -->
   <div>
     <MyMSG
       :messages="Message"
@@ -20,6 +6,7 @@
       :Owner="Sent"
       :sender="Name"
       :stamp="GenStampTime(Stamp)"
+      :avatar="MemberInfo ? imageFromByte(MemberInfo.AVATAR) : noIMG"
     ></MyMSG>
   </div>
 </template>
