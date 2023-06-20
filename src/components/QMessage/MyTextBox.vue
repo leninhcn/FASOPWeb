@@ -1,106 +1,84 @@
 <template>
-  <div class="container" id="myMSG" ref="divContainer">
-    <div v-for="(el, id) in lstElements" :key="id">
-      <span v-if="el.type == 'text'" :id="`span${id}`" style="position: absolute; bottom: 0;">{{ el.value }}</span>
-      <input
-        v-if="el.type == 'text'"
-        type="text"
-        name=""
-        :id="`txt${id}`"
-        v-model="el.value"
-        @keyup="(event) => TextMsgInput(event, id)"
-      />
-      <img v-if="el.type == 'img'" :src="el.value" alt="" />
+  <q-scroll-area
+    :thumb-style="thumbStyle"
+    :content-style="contentStyle"
+    :content-active-style="contentActiveStyle"
+    style="height: 100px"
+  >
+    <div class="myTextBox">
+      <p ref="myMSG" @paste="handlePaste" class="apChild" contenteditable>{{ msg }}</p>
     </div>
-  </div>
+  </q-scroll-area>
+  <q-btn @click="ShowTest">Chan</q-btn>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      lstElements: [
-        { type: "text", value: "", active: false },
-        {
-          type: "img",
-          value: `${this.axios.defaults.baseURL}Images/noIMG.png`,
-          active: true,
-        },
-      ],
-      ActiveElement: undefined,
+      msg: "",
+      contentStyle: {
+        backgroundColor: "rgba(0,0,0,0.02)",
+        color: "#555",
+      },
+      contentActiveStyle: {
+        //  backgroundColor: '#eee',
+        color: "black",
+      },
+      thumbStyle: {
+        right: "2px",
+        borderRadius: "2px",
+        backgroundColor: "#027be3",
+        width: "5px",
+        opacity: "0.75",
+      },
     };
   },
-  mounted() {
-    // document.addEventListener("click", this.ParentClickHandle);
-    // document.addEventListener("keyup", this.CheckInput);
-  },
   methods: {
-    TextMsgInput(event, id) {
-      // const textLength = this.lstElements[0].value.length;
-      console.log(event, id);
-      const textMeasure = document.getElementById("span0");
-      console.log(textMeasure.getBoundingClientRect().width);
-      event.target.style.width = `${Math.ceil(
-        textMeasure.getBoundingClientRect().width + 8
-      )}px`;
-    },
-    CheckInput(event) {
-      if (event.ctrlKey && event.key === "v") {
-        console.log("Đã nhấn Ctrl+V");
-        // Thực hiện xử lý dán tại đây
-      }
-      // else {
-      //   this.ActiveElement.innerText += event.key;
-      // }
-    },
-    AddTextInput() {
-      if (this.lstElements.length <= 0) {
-        const container = document.getElementById("myMSG");
-        const input = document.createElement("input");
-        input.type = "text";
-        // input.classList.add("txtInput");
-        container.appendChild(input);
-        this.lstElements.push({ type: "text", value: input, active: false });
-        this.ActiveElement = input;
-      }
-    },
-    ParentClickHandle(event) {
-      if (this.$refs.divContainer.contains(event.target)) {
-        this.AddTextInput();
+    handlePaste(event) {
+   //   event.preventDefault(); // Ngăn chặn việc dán (paste) tự động
+
+      const clipboardData = event.clipboardData || window.clipboardData;
+      const pastedText = clipboardData.getData('text/plain');
+
+      // Kiểm tra nội dung của clipboard trước khi dán vào
+      if (pastedText.includes('abc')) {
+        // Thực hiện xử lý tùy ý
+        console.log(pastedText);
+        console.log('Nội dung clipboard chứa chuỗi "abc"');
       } else {
-        this.ActiveElement = undefined;
-        console.log("chan");
+        // Không thực hiện dán
+        console.log(pastedText);
+        console.log('Nội dung clipboard không chứa chuỗi "abc"');
       }
+    },
+    ShowTest() {
+      console.log(this.$refs.myMSG.innerText);
+      console.log(this.$refs.myMSG.children.length);
+      const childs = this.$refs.myMSG.children;
+      let temp = "";
+      for (let id = 0; id < childs.length; id++) {
+        const element = childs[id];
+        if (element.tagName !== "IMG") {
+          temp += element.innerText;
+        }
+      }
+      console.log(temp);
     },
   },
 };
 </script>
 
-<style lang="scss">
-.container {
-  border: 1px solid #000;
-  background-color: #ffffff;
+<style lang="scss" scoped>
+.myTextBox {
+  border: 1px solid red;
   text-align: left;
-  display: flex;
-  cursor: text;
-  min-height: 30px;
-  height: fit-content;
-  input[type="text"] {
-    border: 1px solid green;
-    width: 10px;
-    display: inline-flex;
+  .apChild {
+    height: 100%;
+    color: yellow;
     &:focus {
       outline: none;
     }
-    margin-bottom: 0;
   }
-  img {
-    width: 100px;
-    width: 100px;
-    border: 1px solid red;
-  }
-}
-.txtInput {
-  width: 100%;
 }
 </style>
