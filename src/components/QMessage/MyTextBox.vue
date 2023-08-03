@@ -6,7 +6,9 @@
     style="height: 100px"
   >
     <div class="myTextBox">
-      <p ref="myMSG" @paste="handlePaste" class="apChild" contenteditable>{{ msg }}</p>
+      <p ref="myMSG" @paste="handlePaste" class="apChild" contenteditable>
+        {{ msg }}
+      </p>
     </div>
   </q-scroll-area>
   <q-btn @click="ShowTest">Chan</q-btn>
@@ -36,13 +38,13 @@ export default {
   },
   methods: {
     handlePaste(event) {
-   //   event.preventDefault(); // Ngăn chặn việc dán (paste) tự động
+      //   event.preventDefault(); // Ngăn chặn việc dán (paste) tự động
 
       const clipboardData = event.clipboardData || window.clipboardData;
-      const pastedText = clipboardData.getData('text/plain');
+      const pastedText = clipboardData.getData("text/plain");
 
       // Kiểm tra nội dung của clipboard trước khi dán vào
-      if (pastedText.includes('abc')) {
+      if (pastedText.includes("abc")) {
         // Thực hiện xử lý tùy ý
         console.log(pastedText);
         console.log('Nội dung clipboard chứa chuỗi "abc"');
