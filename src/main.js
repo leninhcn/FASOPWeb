@@ -23,7 +23,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 app.use(VueAxios, axios)
 app.provide('axios', app.config.globalProperties.axios)
-axios.defaults.baseURL = "http://localhost:63851/"//"http://localhost:63851/"
+axios.defaults.baseURL = "http://172.23.20.170:63851/"//"http://localhost:63851/"
 app.use(FlagIcon);
 app.use(ElementPlus);
 app.use(router);
