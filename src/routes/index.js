@@ -46,8 +46,8 @@ const routes = [
         path: '/langtrans',
         name: 'langtrans',
         component: () =>
-            import ('../components/MesUtitils/langTrans.vue')
-    },
+          import('../components/MesUtitils/langTrans.vue')
+      },
       {
         path: "/grpifo",
         name: "grpifo",

@@ -12,6 +12,7 @@
       binary-state-sort
       :rows-per-page-options="[10, 20, 50, 100, 0]"
       :loading="DataLoading"
+      :filter="filter"
     >
       <template v-slot:top-right>
         <q-input dense debounce="300" v-model="filter" placeholder="Search">
@@ -74,7 +75,7 @@
               glossy
               rounded
               dense
-              color="primary"
+              :color="props.row.editting ? 'primary' : 'grey-5'"
               icon="done"
               @click="SubmitEdit(props.row)"
               :disable="!props.row.editting"
@@ -84,11 +85,19 @@
               glossy
               rounded
               dense
-              color="positive"
+              :color="props.row.editting ? 'positive' : 'grey-5'"
               icon="refresh"
               :disable="!props.row.editting"
               @click="InitData"
             ></q-btn>
+            <el-popconfirm
+              title="Are you sure to delete this?"
+              @confirm="DeleteLang(props.row)"
+            >
+              <template #reference>
+                <q-btn glossy rounded dense color="red" icon="delete"></q-btn>
+              </template>
+            </el-popconfirm>
           </q-td>
         </q-tr>
       </template>
@@ -147,6 +156,7 @@
 export default {
   data() {
     return {
+      filter: "",
       langModel: { ENG: "", ZHCN: "", VNI: "" },
       DataLoading: false,
       newlang: false,
@@ -238,8 +248,35 @@ export default {
           });
         });
     },
+    async DeleteLang(row) {
+      const obj = { rowid: row.RowId };
+      await this.axios
+        .post(`api/LanguageBar/DeleteTransLang`, obj)
+        .then((res) => {
+          this.$message({
+            type: "success",
+            message: res.data,
+          });
+          this.InitData();
+        })
+        .catch((err) => {
+          this.$message({
+            type: "error",
+            message: err,
+          });
+        });
+    },
     async AddNewLangTrans() {
       this.newlang = false;
+      for (const key in this.langModel) {
+        if (this.langModel[key].trim() == "") {
+          this.$message({
+            type: "error",
+            message: "Has empty field!",
+          });
+          return false;
+        }
+      }
       await this.axios
         .post("api/LanguageBar/NewLangTrans", this.langModel)
         .then((res) => {
@@ -250,12 +287,21 @@ export default {
           this.langModel.ENG = "";
           this.langModel.ZHCN = "";
           this.langModel.VNI = "";
+          this.InitData();
         })
         .catch((err) => {
-          this.$message({
-            type: "error",
-            message: err,
-          });
+          console.log(err);
+          if (err.code == "ERR_NETWORK") {
+            this.$message({
+              type: "error",
+              message: err,
+            });
+          } else {
+            this.$message({
+              type: "error",
+              message: err.response.data,
+            });
+          }
         });
     },
   },
