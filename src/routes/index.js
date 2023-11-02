@@ -49,6 +49,12 @@ const routes = [
           import('../components/MesUtitils/langTrans.vue')
       },
       {
+        path: '/erdash',
+        name: 'erdash',
+        component: () =>
+          import('../components/FATPkanban/Dashboard.vue')
+      },
+      {
         path: "/grpifo",
         name: "grpifo",
         component: grpifo,
