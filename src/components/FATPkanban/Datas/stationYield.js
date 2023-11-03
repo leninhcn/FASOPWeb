@@ -99,7 +99,7 @@ export default function GetOption() {
                 type: 'pie',
                 center: ['30%', '50%'],
                 radius: radius,
-                x: '0%', // for funnel
+                x: '0%',
                 itemStyle: labelFromatter,
                 data: [
                     { name: 'other', value: 98, itemStyle: labelTop, label: { show: true, fontSize: 18 } },

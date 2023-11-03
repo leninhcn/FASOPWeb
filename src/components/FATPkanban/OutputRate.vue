@@ -22,17 +22,19 @@ export default {
       this.myChart.setOption(this.option);
     }
 
-    window.addEventListener("resize", this.myChart.resize);
+    // window.addEventListener("resize", this.myChart.resize);
   },
   methods: {
     DataUpdate(iLine) {
       this.axios
         .post("api/FATPKanban/GetOuputQty", iLine)
         .then((res) => {
+          var line = localStorage.getItem("CurrentLine");
           this.option.series[0].data = [];
           for (let idx = 0; idx < res.data.data.length; idx++) {
             this.option.series[0].data.push(res.data.data[idx].outputQty);
           }
+          this.option.title.text = line;
           this.myChart.setOption(this.option);
         })
         .catch((err) => {
@@ -46,7 +48,7 @@ export default {
 <style lang="scss" scoped>
 #bar-chart {
   position: relative;
-  height: 40vh;
+  height: 30vh;
   width: 100%;
   overflow: hidden;
 }

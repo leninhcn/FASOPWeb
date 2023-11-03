@@ -3,7 +3,7 @@ const gaugeData = [
     value: 20,
     name: "Perfect",
     title: {
-      show: true,
+      show: false,
       offsetCenter: ["0%", "-35%"],
     },
     detail: {
@@ -15,7 +15,7 @@ const gaugeData = [
     value: 40,
     name: "Good",
     title: {
-      show: true,
+      show: false,
       offsetCenter: ["0%", "-3%"],
     },
     detail: {
@@ -27,7 +27,7 @@ const gaugeData = [
     value: 60,
     name: "Commonly",
     title: {
-      show: true,
+      show: false,
       offsetCenter: ["0%", "27%"],
     },
     detail: {
@@ -64,9 +64,9 @@ export default function GetOption() {
     tooltip: {},
     title: {
       text: 'Work Order Output Rate',
-      // subtext: 'The most recent 1 - 2 hours',
-      x: 240,
-      y: 'bottom',
+      subtext: '     Displays the latest 3 Work Order',
+      x: 'center',
+      y: 20,
       textStyle: { color: '#F5FBEF' },
       show: true
     },
@@ -75,7 +75,7 @@ export default function GetOption() {
         type: "gauge",
         startAngle: 90,
         endAngle: -270,
-        center: ['60%', '50%'],
+        center: ['50%', '62%'],
         pointer: {
           show: false,
         },
@@ -89,10 +89,10 @@ export default function GetOption() {
             borderColor: "#464646",
           },
         },
-        color: ['#1478eb', 'green', 'orange', 'yellow', 'red', 'indigo', 'purple', '#cccccc'],
+        color: ['#04B404', 'orange', 'yellow', 'red', 'indigo', 'purple', '#cccccc'],
         axisLine: {
           lineStyle: {
-            width: 40,
+            width: 30,
           },
         },
         splitLine: {

@@ -11,7 +11,7 @@ export default function GetOption() {
             },
         },
         tooltip: {
-            trigger: 'axis',
+            trigger: 'item',
             axisPointer: {
                 type: 'shadow'
               }
@@ -49,7 +49,7 @@ export default function GetOption() {
             {
                 name: 'Line 1',
                 type: 'bar',
-                itemStyle: { normal: { color: '#31B404', label: { show: true, textStyle: { color: '#FAF3BC' } } } },
+                itemStyle: { normal: { color: '#04B404', label: { show: true, textStyle: { color: '#FAF3BC' } } } },
                 data: [40, 70, 76, 60, 35, 73, 60, 80, 67, 48, 75, 67, 40, 70, 76, 60, 35, 73, 60, 80, 67, 48, 75, 67]
             },
 

@@ -11,8 +11,7 @@ export default {
       option: GetOption(),
       myChart: undefined,
       colors: [
-        "#1478eb",
-        "green",
+        "#04B404",
         "orange",
         "yellow",
         "red",
@@ -106,7 +105,7 @@ export default {
 
 <style lang="scss" scoped>
 #gause-chart {
-  height: 40vh;
+  height: 30vh;
   width: 100%;
   overflow: hidden;
 }

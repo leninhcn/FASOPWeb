@@ -1,14 +1,8 @@
 <template>
   <div class="MainDashboard">
-    <div class="absolute-top-left z-top">
-      <q-btn-group push>
-        <q-btn
-          :label="model.name"
-          icon="dashboard"
-          glossy
-          color="yellow"
-          text-color="black"
-        >
+    <div class="absolute-top-left z-top ctlBar" ref="ctlBar">
+      <q-btn-group
+        ><q-btn :label="model.name" glossy color="yellow" text-color="black">
           <q-menu
             transition-show="scale"
             transition-hide="scale"
@@ -26,14 +20,8 @@
             </q-list>
           </q-menu>
         </q-btn>
-        <q-btn icon="double_arrow" glossy color="amber" text-color="black" />
-        <q-btn
-          :label="line.name"
-          icon="menu"
-          glossy
-          color="orange"
-          text-color="black"
-        >
+        <q-separator vertical />
+        <q-btn :label="line.name" glossy color="orange" text-color="black">
           <q-menu
             transition-show="scale"
             transition-hide="scale"
@@ -51,9 +39,19 @@
             </q-list>
           </q-menu>
         </q-btn>
+        <div
+          style="font-size: 1.7em"
+          ref="btnArrow"
+          class="btnArrow"
+          @click="btnArrowClick"
+        >
+          <q-icon
+            :name="ctlMenu ? 'double_arrow' : 'keyboard_double_arrow_left'"
+          ></q-icon>
+        </div>
       </q-btn-group>
     </div>
-    <div ref="mainPn" style="width: 100%" class="mainPn">
+    <div ref="mainPn" style="width: 100%" class="mainPn" id="mainPn">
       <div class="absolute-top-right z-top">
         <q-btn
           @click="toggle"
@@ -62,7 +60,7 @@
         ></q-btn>
       </div>
       <tr>
-        <td style="min-width: 570px">
+        <td style="min-width: 500px">
           <WoTarget ref="WoTarget"></WoTarget>
         </td>
         <td style="min-width: 500px; width: 100%">
@@ -70,8 +68,16 @@
         </td>
       </tr>
       <tr>
-        <td></td>
+        <td><LineTotalRate ref="LineTotalRate"></LineTotalRate></td>
         <td><StationYield ref="StationYield"></StationYield></td>
+      </tr>
+      <tr>
+        <td style="min-width: 500px">
+          <Top10Issue ref="Top10Issue"></Top10Issue>
+        </td>
+        <td style="min-width: 500px; width: 100%">
+          <TopByStation ref="TopByStation"></TopByStation>
+        </td>
       </tr>
     </div>
   </div>
@@ -81,7 +87,9 @@
 import OutputRate from "./OutputRate.vue";
 import WoTarget from "./WoTarget.vue";
 import StationYield from "./StationYield.vue";
-
+import LineTotalRate from "./LineTotalRate.vue";
+import Top10Issue from "./Top10Issue.vue";
+import TopByStation from "./TopFailByStation.vue";
 import { AppFullscreen } from "quasar";
 
 export default {
@@ -90,9 +98,13 @@ export default {
     OutputRate,
     WoTarget,
     StationYield,
+    LineTotalRate,
+    Top10Issue,
+    TopByStation,
   },
   data() {
     return {
+      ctlMenu: true,
       fullScreen: false,
       models: [
         { name: "ER001", DB: "BU23" },
@@ -108,15 +120,58 @@ export default {
         id: "10606",
       },
       lines: [],
+      ctlBarSize: {
+        witdh: 0,
+        height: 0,
+      },
     };
   },
   methods: {
+    btnArrowClick() {
+      if(this.ctlBarSize.witdh>0) {
+        if (this.ctlMenu) {
+        this.$refs.ctlBar.style.left = "0px";
+        setTimeout(() => {
+          if (!this.ctlMenu) {
+            this.ctlMenu = !this.ctlMenu;
+            this.$refs.ctlBar.style.left = `-${
+              this.ctlBarSize.witdh - this.$refs.btnArrow.clientWidth
+            }px`;
+          }
+        }, 60000);
+      } else {
+        this.$refs.ctlBar.style.left = `-${
+          this.ctlBarSize.witdh - this.$refs.btnArrow.clientWidth
+        }px`;
+      }
+      }else {
+        if (this.ctlMenu) {
+        this.$refs.ctlBar.style.left = "0px";
+        setTimeout(() => {
+          if (!this.ctlMenu) {
+            this.ctlMenu = !this.ctlMenu;
+            this.$refs.ctlBar.style.left = `-150px`;
+          }
+        }, 60000);
+      } else {
+        this.$refs.ctlBar.style.left = `-150px`;
+      }
+      }
+
+      this.ctlMenu = !this.ctlMenu;
+    },
     ChangeModel(el) {
       this.model = el;
       this.line = {
         name: "Line",
         id: "10606",
       };
+      setTimeout(() => {
+        this.ctlBarSize = {
+          witdh: this.$refs.ctlBar.clientWidth,
+          height: this.$refs.ctlBar.clientHeight,
+        };
+      }, 200);
       this.getAllLine(el);
     },
     getAllLine(model) {
@@ -141,7 +196,14 @@ export default {
         });
     },
     onLineChanged(val) {
+      localStorage.setItem("CurrentLine", val.name);
       this.line = val;
+      setTimeout(() => {
+        this.ctlBarSize = {
+          witdh: this.$refs.ctlBar.clientWidth,
+          height: this.$refs.ctlBar.clientHeight,
+        };
+      }, 200);
       this.$refs.OutputRate.DataUpdate({
         PDLINE_ID: val.id,
         DB: this.model.DB,
@@ -164,15 +226,32 @@ export default {
 .MainDashboard {
   width: 102%;
   position: relative;
-  top:-18px;
+  top: -18px;
   left: -20px;
   padding: 0;
 }
-.mainPn{
-  background-image: url('../../assets/bg1.jpg');
+.mainPn {
+  background-image: url("../../assets/bg1.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   width: 100%;
   height: 94vh;
+}
+.ctlBar {
+  left: -150px;
+  transition: left 0.5s;
+}
+.btnArrow {
+  background: linear-gradient(
+    to top,
+    rgba(255, 187, 0, 0.452),
+    rgb(255, 196, 0),
+    rgba(255, 187, 0, 0.493)
+  );
+  cursor: pointer;
+  transition: box-shadow 0.8s;
+  &:hover {
+    box-shadow: 0 0 20px rgb(251, 255, 37);
+  }
 }
 </style>
