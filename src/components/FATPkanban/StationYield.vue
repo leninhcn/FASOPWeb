@@ -152,9 +152,9 @@ export default {
       this.myChart.setOption(this.option);
     }
     window.addEventListener("resize", this.myChart.resize);
-    setTimeout(() => {
-      this.DataUpdate({ PDLINE_ID: "10003", DB: "BU20" });      
-    }, 10000);
+    // setTimeout(() => {
+    //   this.DataUpdate({ PDLINE_ID: "10003", DB: "BU20" });      
+    // }, 10000);
   },
 };
 </script>

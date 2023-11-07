@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Login from "../components/NewLogin.vue";
+import Login from "../components/Login.vue";
 import wellcome from "../components/Wellcome.vue";
 import home from '../components/Menu.vue';
 import testmenu from '../components/Menu_Base.vue';

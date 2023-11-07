@@ -66,6 +66,7 @@ export default {
   },
   methods: {
     DataUpdate(iLine) {
+      this.myChart.clear();
       this.axios
         .post("api/FATPKanban/GetYieldTotal", iLine)
         .then((res) => {
@@ -93,9 +94,9 @@ export default {
     }
 
     window.addEventListener("resize", this.myChart.resize);
-    setTimeout(() => {
-      this.DataUpdate({ PDLINE_ID: "10003", DB: "BU20" });
-    }, 5000);
+    // setTimeout(() => {
+    //   this.DataUpdate({ PDLINE_ID: "10003", DB: "BU20" });
+    // }, 5000);
   },
 };
 </script>

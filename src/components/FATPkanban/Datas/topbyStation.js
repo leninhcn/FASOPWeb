@@ -20,6 +20,7 @@ export default function GetOption() {
             formatter: "{b} : {c} ({d}%)"
         },
         calculable: true,
+        graphic:[],
         series: [
             {
                 name: '',
@@ -47,7 +48,8 @@ export default function GetOption() {
                     { value: 5, name: 'ER0004', },
                     { value: 8, name: 'ER0005', }
                 ]
-            }, {
+            }, 
+            {
                 name: '',
                 type: 'pie',
                 radius: '45%',

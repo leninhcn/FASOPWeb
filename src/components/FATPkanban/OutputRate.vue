@@ -22,7 +22,7 @@ export default {
       this.myChart.setOption(this.option);
     }
 
-    // window.addEventListener("resize", this.myChart.resize);
+    window.addEventListener("resize", this.myChart.resize);
   },
   methods: {
     DataUpdate(iLine) {
@@ -35,6 +35,7 @@ export default {
             this.option.series[0].data.push(res.data.data[idx].outputQty);
           }
           this.option.title.text = line;
+          this.option.series[0].name = line;
           this.myChart.setOption(this.option);
         })
         .catch((err) => {

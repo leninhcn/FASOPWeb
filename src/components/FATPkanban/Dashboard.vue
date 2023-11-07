@@ -59,6 +59,7 @@
           flat
         ></q-btn>
       </div>
+      <div class="absolute-top-right z-top clock"><Myclock></Myclock></div>
       <tr>
         <td style="min-width: 500px">
           <WoTarget ref="WoTarget"></WoTarget>
@@ -67,10 +68,16 @@
           <OutputRate ref="OutputRate"></OutputRate>
         </td>
       </tr>
+      <div></div>
       <tr>
-        <td><LineTotalRate ref="LineTotalRate"></LineTotalRate></td>
-        <td><StationYield ref="StationYield"></StationYield></td>
+        <td style="min-width: 500px">
+          <LineTotalRate ref="LineTotalRate"></LineTotalRate>
+        </td>
+        <td style="min-width: 500px; width: 100%">
+          <StationYield ref="StationYield"></StationYield>
+        </td>
       </tr>
+      <div></div>
       <tr>
         <td style="min-width: 500px">
           <Top10Issue ref="Top10Issue"></Top10Issue>
@@ -79,6 +86,14 @@
           <TopByStation ref="TopByStation"></TopByStation>
         </td>
       </tr>
+      <q-linear-progress
+        :value="timeRemain"
+        rounded
+        color="accent"
+        class="q-mt-sm"
+        size="1px"
+        style="margin-top: 20px"
+      />
     </div>
   </div>
 </template>
@@ -90,6 +105,7 @@ import StationYield from "./StationYield.vue";
 import LineTotalRate from "./LineTotalRate.vue";
 import Top10Issue from "./Top10Issue.vue";
 import TopByStation from "./TopFailByStation.vue";
+import Myclock from "../Utitils/myClock.vue";
 import { AppFullscreen } from "quasar";
 
 export default {
@@ -101,9 +117,13 @@ export default {
     LineTotalRate,
     Top10Issue,
     TopByStation,
+    Myclock,
   },
   data() {
     return {
+      refreshTime: 60000,
+      timeRemain: 0,
+      countDown: false,
       ctlMenu: true,
       fullScreen: false,
       models: [
@@ -117,45 +137,66 @@ export default {
       model: { name: "Model", DB: "BU23" },
       line: {
         name: "Line",
-        id: "10606",
+        id: "0",
       },
       lines: [],
       ctlBarSize: {
         witdh: 0,
         height: 0,
       },
+      updateIntID: 0,
     };
   },
+  unmounted() {
+    clearInterval(this.updateIntID);
+  },
+  mounted() {},
   methods: {
+    async countDownUpdate() {
+      if (this.countDown) return;
+      this.countDown = true;
+      this.updateIntID = setInterval(() => {
+        if (this.line.name != "Line" && this.line.id != 0) {
+          this.UpdateChart({ PDLINE_ID: this.line.id, DB: this.model.DB });
+        }
+      }, this.refreshTime);
+      let dem = 0;
+      while (this.refreshTime > 1000) {
+        dem++;
+        this.timeRemain = dem / (this.refreshTime / 1000);
+        await new Promise(resol => setTimeout(resol, 1000));
+        if (this.timeRemain >= 1) dem = 0;
+      }
+    },
     btnArrowClick() {
-      if(this.ctlBarSize.witdh>0) {
+      if (this.ctlBarSize.witdh > 0) {
         if (this.ctlMenu) {
-        this.$refs.ctlBar.style.left = "0px";
-        setTimeout(() => {
-          if (!this.ctlMenu) {
-            this.ctlMenu = !this.ctlMenu;
-            this.$refs.ctlBar.style.left = `-${
-              this.ctlBarSize.witdh - this.$refs.btnArrow.clientWidth
-            }px`;
-          }
-        }, 60000);
+          this.$refs.ctlBar.style.left = "0px";
+          setTimeout(() => {
+            if (!this.ctlMenu) {
+              this.ctlMenu = !this.ctlMenu;
+              this.$refs.ctlBar.style.left = `-${
+                this.ctlBarSize.witdh - this.$refs.btnArrow.clientWidth
+              }px`;
+            }
+          }, 60000);
+        } else {
+          this.$refs.ctlBar.style.left = `-${
+            this.ctlBarSize.witdh - this.$refs.btnArrow.clientWidth
+          }px`;
+        }
       } else {
-        this.$refs.ctlBar.style.left = `-${
-          this.ctlBarSize.witdh - this.$refs.btnArrow.clientWidth
-        }px`;
-      }
-      }else {
         if (this.ctlMenu) {
-        this.$refs.ctlBar.style.left = "0px";
-        setTimeout(() => {
-          if (!this.ctlMenu) {
-            this.ctlMenu = !this.ctlMenu;
-            this.$refs.ctlBar.style.left = `-150px`;
-          }
-        }, 60000);
-      } else {
-        this.$refs.ctlBar.style.left = `-150px`;
-      }
+          this.$refs.ctlBar.style.left = "0px";
+          setTimeout(() => {
+            if (!this.ctlMenu) {
+              this.ctlMenu = !this.ctlMenu;
+              this.$refs.ctlBar.style.left = `-150px`;
+            }
+          }, 60000);
+        } else {
+          this.$refs.ctlBar.style.left = `-150px`;
+        }
       }
 
       this.ctlMenu = !this.ctlMenu;
@@ -204,11 +245,16 @@ export default {
           height: this.$refs.ctlBar.clientHeight,
         };
       }, 200);
-      this.$refs.OutputRate.DataUpdate({
-        PDLINE_ID: val.id,
-        DB: this.model.DB,
-      });
-      this.$refs.WoTarget.DataUpdate({ PDLINE_ID: val.id, DB: this.model.DB });
+      this.UpdateChart({ PDLINE_ID: this.line.id, DB: this.model.DB });
+    },
+    UpdateChart(iLine) {
+      this.countDownUpdate();
+      this.$refs.OutputRate.DataUpdate(iLine);
+      this.$refs.WoTarget.DataUpdate(iLine);
+      this.$refs.LineTotalRate.DataUpdate(iLine);
+      this.$refs.StationYield.DataUpdate(iLine);
+      this.$refs.Top10Issue.DataUpdate(iLine);
+      this.$refs.TopByStation.DataUpdate(iLine);
     },
     toggle() {
       if (!this.fullScreen) {
@@ -217,6 +263,11 @@ export default {
         AppFullscreen.exit();
       }
       this.fullScreen = !this.fullScreen;
+      setTimeout(() => {
+        if (this.line.name != "Line" && this.line.id != 0) {
+          this.UpdateChart({ PDLINE_ID: this.line.id, DB: this.model.DB });
+        }
+      }, 1000);
     },
   },
 };
@@ -236,6 +287,11 @@ export default {
   background-repeat: no-repeat;
   width: 100%;
   height: 94vh;
+  position: relative;
+}
+.clock {
+  right: 5%;
+  top: 1%;
 }
 .ctlBar {
   left: -150px;
