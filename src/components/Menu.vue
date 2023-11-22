@@ -45,7 +45,7 @@
         </div>
       </el-header>
       <el-container>
-        <el-aside :width="!mColap ? '64px' : '200px'" style="min-height: 93vh;">
+        <el-aside :width="!mColap ? '64px' : '200px'" style="min-height: 93vh">
           <div class="toggle-button" @click="toggleCollapse" id="toggle-button">
             <Expand v-if="!mColap" style="width: 2em; height: 2em" />
             <Fold v-if="mColap" style="width: 2em; height: 2em" />
@@ -138,9 +138,9 @@
         </el-aside>
         <el-main>
           <router-view></router-view>
-          <ChatBox></ChatBox>
+          <ChatBox v-if="GetUser.AdminRole >= 9"></ChatBox>
         </el-main>
-        <div v-if="GetUser.AdminRole >= 9">
+        <div v-if="GetUser.UserName == '91023991' && GetUser.AdminRole >= 9">
           <div class="MediaPopup" ref="MediaPopup">
             <MyPlayer
               @ShowList="ShowPlayList"
@@ -175,7 +175,7 @@
             size="lg"
             icon="radio"
             @click="ShowPlayer"
-            style="right: 60px !important; z-index: 997;"
+            style="right: 60px !important; z-index: 997"
           ></q-btn>
         </div>
       </el-container>

@@ -27,7 +27,7 @@
         <span>{{ timeDetails.now.seconds1 }}</span
         ><span>{{ timeDetails.pre_now.seconds1 }}</span>
       </div>
-      <div ref="seconds2" :class="{ move: moveControl.seconds2 }">
+      <div ref="seconds2" :class="{ 'move-one': moveControl.seconds2 }">
         <span>{{ timeDetails.now.seconds2 }}</span
         ><span>{{ timeDetails.pre_now.seconds2 }}</span>
       </div>
@@ -75,11 +75,11 @@ export default {
   },
   mounted() {
     this.intervalID = setInterval(() => {
+      this.date = this.GetDate();
+      this.ParseTimeSlide();
       if (!this.moveControl.seconds2) {
         this.moveControl.seconds2 = true;
       }
-      this.date = this.GetDate();
-      this.ParseTimeSlide();
     }, 1000);
   },
   methods: {
@@ -124,7 +124,9 @@ export default {
       this.checkMoveAll();
       setTimeout(() => {
         this.timeDetails.now = this.timeDetails.pre_now;
-      }, 700);
+        this.moveControl.seconds2 = false;
+        this.$refs.seconds2.transform = "translateY(0px)";
+      }, 900);
     },
     GetNowTime(time) {
       if (time) {
@@ -141,8 +143,6 @@ export default {
         };
         return result;
       }
-      //  const now = new Date();
-      // now.setSeconds(now.getSeconds() + 1);
     },
     GetDate() {
       const now = new Date();
@@ -199,7 +199,10 @@ export default {
     }
   }
 }
-
+.seconds2 {
+  transition: transform 0.6s;
+  transform: translateY(-45px);
+}
 .move {
   animation-name: moveBox;
   animation-duration: 1s;

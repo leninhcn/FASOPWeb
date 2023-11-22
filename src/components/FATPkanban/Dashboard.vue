@@ -101,7 +101,7 @@
 <script>
 import OutputRate from "./OutputRate.vue";
 import WoTarget from "./WoTarget.vue";
-import StationYield from "./StationYield.vue";
+import StationYield from "./PassRateCommon.vue";
 import LineTotalRate from "./LineTotalRate.vue";
 import Top10Issue from "./Top10Issue.vue";
 import TopByStation from "./TopFailByStation.vue";
@@ -145,27 +145,47 @@ export default {
         height: 0,
       },
       updateIntID: 0,
+      windowResize: false,
     };
   },
   unmounted() {
-    clearInterval(this.updateIntID);
+    // clearInterval(this.updateIntID);
   },
-  mounted() {},
+  mounted() {
+    window.addEventListener("resize", () => {
+      if (!this.windowResize) {
+        setTimeout(() => {
+          this.windowResize = false;
+          if (this.line.name != "Line" && this.line.id != 0) {
+            this.UpdateChart({ PDLINE_ID: this.line.id, DB: this.model.DB });
+          }
+        }, 1000);
+      }
+      this.windowResize = true;
+    });
+  },
   methods: {
+    checkAndUpdateChart() {
+      this.windowResize = false;
+      console.log("thay doi kich thuoc panel");
+      if (this.line.name != "Line" && this.line.id != 0) {
+        this.UpdateChart({ PDLINE_ID: this.line.id, DB: this.model.DB });
+      }
+    },
     async countDownUpdate() {
       if (this.countDown) return;
       this.countDown = true;
-      this.updateIntID = setInterval(() => {
-        if (this.line.name != "Line" && this.line.id != 0) {
-          this.UpdateChart({ PDLINE_ID: this.line.id, DB: this.model.DB });
-        }
-      }, this.refreshTime);
-      let dem = 0;
+      let dem = Math.ceil(this.refreshTime / 1000);
       while (this.refreshTime > 1000) {
-        dem++;
         this.timeRemain = dem / (this.refreshTime / 1000);
-        await new Promise(resol => setTimeout(resol, 1000));
-        if (this.timeRemain >= 1) dem = 0;
+        await new Promise((resol) => setTimeout(resol, 1000));
+        dem--;
+        if (this.timeRemain <= 0) {
+          dem = Math.ceil(this.refreshTime / 1000);
+          if (this.line.name != "Line" && this.line.id != 0) {
+            this.UpdateChart({ PDLINE_ID: this.line.id, DB: this.model.DB });
+          }
+        }
       }
     },
     btnArrowClick() {
@@ -246,9 +266,9 @@ export default {
         };
       }, 200);
       this.UpdateChart({ PDLINE_ID: this.line.id, DB: this.model.DB });
+      this.countDownUpdate();
     },
     UpdateChart(iLine) {
-      this.countDownUpdate();
       this.$refs.OutputRate.DataUpdate(iLine);
       this.$refs.WoTarget.DataUpdate(iLine);
       this.$refs.LineTotalRate.DataUpdate(iLine);
@@ -263,11 +283,6 @@ export default {
         AppFullscreen.exit();
       }
       this.fullScreen = !this.fullScreen;
-      setTimeout(() => {
-        if (this.line.name != "Line" && this.line.id != 0) {
-          this.UpdateChart({ PDLINE_ID: this.line.id, DB: this.model.DB });
-        }
-      }, 1000);
     },
   },
 };

@@ -47,7 +47,7 @@ export default {
             }
             grc.push({
               type: "group",
-              left: "left",
+              left: "right",
               top: id * 40 + 70,
               children: [
                 {

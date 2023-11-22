@@ -55,6 +55,12 @@ const routes = [
           import('../components/FATPkanban/Dashboard.vue')
       },
       {
+        path: '/ratecommon',
+        name: 'ratecommon',
+        component: () =>
+          import('../components/FATPkanban/PassRateCommon.vue')
+      },
+      {
         path: "/grpifo",
         name: "grpifo",
         component: grpifo,

@@ -19,7 +19,6 @@ export default {
         .post("api/FATPKanban/GetTOP10Fail", iLine)
         .then((res) => {
           if (res.data.status == "OK") {
-            console.log(res.data.data);
             var lgData = [],
               srData = [];
             res.data.data.forEach((el) => {

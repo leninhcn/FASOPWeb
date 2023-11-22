@@ -65,7 +65,6 @@ export default {
         .post("api/FATPKanban/GetTOP5FailByStation", iLine)
         .then((res) => {
           if (res.data.status == "OK") {
-            console.log(res.data.data);
             const sr = [];
             const grap = [];
             for (let i = 0; i < res.data.data.DATA.length; i++) {

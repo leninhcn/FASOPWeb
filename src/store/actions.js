@@ -15,6 +15,7 @@ export default {
             user.Avatar = undefined;
             const isLogin = true;
             commit('UpdateUser', user);
+            console.log(user);
             sessionStorage.setItem("UserName", user.NAME);
             sessionStorage.setItem("isLogin", isLogin);
             resolve(result);

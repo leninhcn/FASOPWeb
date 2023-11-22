@@ -1,5 +1,6 @@
 <template>
   <div class="parent">
+    <img src="../assets/luxlogo.png" alt="" class="luxlogo" />
     <div class="landscape"></div>
     <div class="filter"></div>
     <canvas id="canvas"></canvas>
@@ -189,6 +190,12 @@ export default {
   animation: colorChange 30s ease-in-out infinite;
   animation-fill-mode: both;
   mix-blend-mode: overlay;
+}
+
+.luxlogo {
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }
 
 @keyframes colorChange {

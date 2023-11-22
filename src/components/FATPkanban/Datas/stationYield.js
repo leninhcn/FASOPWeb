@@ -8,7 +8,6 @@ var labelTop = {
                 baseline: 'bottom'
             }
         },
-
         labelLine: {
             show: false,
         }

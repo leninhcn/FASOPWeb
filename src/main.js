@@ -18,14 +18,13 @@ import * as echart from 'echarts'
 const app = createApp(App).use(Quasar, quasarUserOptions);
 app.use(VueCookies);
 app.config.globalProperties.$Echart = echart;
-//app.config.globalProperties.$q = useQuasar();
 app.use(store);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
 app.use(VueAxios, axios)
 app.provide('axios', app.config.globalProperties.axios)
-axios.defaults.baseURL = "http://localhost:63851/"//"http://172.23.20.170:63851/"
+axios.defaults.baseURL = "http://172.23.20.170:63851/"//"http://172.23.20.170:63851/"
 app.use(FlagIcon);
 app.use(ElementPlus);
 app.use(router);

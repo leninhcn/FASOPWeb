@@ -1,0 +1,154 @@
+<template>
+  <div id="rate-chart"></div>
+</template>
+
+<script>
+import GetOption from "./Datas/rateCommon";
+
+export default {
+  data() {
+    return {
+      option: GetOption(),
+      myChart: undefined,
+    };
+  },
+  methods: {
+    DataUpdate(iLine) {
+      this.myChart.clear();
+      this.axios
+        .post("api/FATPKanban/GetYieldDetail", iLine)
+        .then((res) => {
+          const [sr, grp] = this.GetSeries(res.data.data);
+          if (sr.length > 0) {
+            this.option.series = sr;
+            this.option.graphic = grp;
+            this.myChart.setOption(this.option);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    GetSeries(data) {
+      const rs = [];
+      const grp = [];
+      const offset =
+        data.length > 0 ? Math.floor(this.myChart.getWidth() / data.length) : 1;
+      const calY = this.myChart.getHeight();
+      for (let id = 0; id < data.length; id++) {
+        const el = data[id];
+        grp.push({
+          type: "text",
+          style: {
+            text: el.PROCESS_NAME,
+            x: id == 0 ? id * offset + 60 : id * offset + 40,
+            y: calY - 50,
+            fill: "#fff",
+            font: "20px verdana",
+          },
+        });
+
+        let datas = [
+          {
+            value: el.PERCENT,
+            name: "Final Rate",
+            title: {
+              show: false,
+              offsetCenter: ["0%", "-3%"],
+            },
+            detail: {
+              valueAnimation: true,
+              offsetCenter: ["0%", "-20%"],
+            },
+          },
+          {
+            value: el.FIRST_RATE,
+            name: "First Pass Rate",
+            title: {
+              show: false,
+              offsetCenter: ["0%", "27%"],
+            },
+            detail: {
+              valueAnimation: true,
+              offsetCenter: ["0%", "8%"],
+            },
+          },
+        ];
+        rs.push({
+          type: "gauge",
+          startAngle: 90,
+          endAngle: -270,
+          center: [id == 0 ? id * offset + 80 : id * offset + 60, "50%"],
+          pointer: {
+            show: false,
+          },
+          progress: {
+            show: true,
+            overlap: false,
+            roundCap: false,
+            clip: true,
+            itemStyle: {
+              borderWidth: 1,
+              borderColor: "#464646",
+            },
+          },
+          color: ["#04B404", "rgb(253, 2, 253)", "purple", "#cccccc"],
+          axisLine: {
+            lineStyle: {
+              width: 20,
+            },
+          },
+          splitLine: {
+            show: false,
+            distance: 0,
+            length: 15,
+          },
+          axisTick: {
+            show: false,
+          },
+          axisLabel: {
+            show: false,
+            distance: 20,
+          },
+          radius: "50%",
+          data: datas,
+          title: {
+            fontSize: 8,
+          },
+          detail: {
+            width: 25,
+            height: 5,
+            fontSize: 10,
+            color: "inherit",
+            borderColor: "inherit",
+            borderRadius: 20,
+            borderWidth: 1,
+            formatter: "{value}%",
+          },
+        });
+      }
+      return [rs, grp];
+    },
+  },
+  mounted() {
+    var dom = document.getElementById("rate-chart");
+    this.myChart = this.$Echart.init(dom, null, {
+      renderer: "canvas",
+      useDirtyRect: false,
+    });
+    if (this.option && typeof this.option === "object") {
+      this.myChart.setOption(this.option);
+    }
+
+    window.addEventListener("resize", this.myChart.resize);
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+#rate-chart {
+  height: 30vh;
+  width: 100%;
+  overflow: hidden;
+}
+</style>
