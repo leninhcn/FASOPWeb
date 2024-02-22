@@ -1,0 +1,25 @@
+0000000000000000000000000000000000000000 507fc6d5593a15f8e121bd45174efb23f074d6e4 NinhLe <leninhcn@gmail.com> 1686642357 +0700	commit (initial): First commit
+507fc6d5593a15f8e121bd45174efb23f074d6e4 9f77e13b3517fc3226972750a3610faab681652d NinhLe <leninhcn@gmail.com> 1686642448 +0700	commit: test commit
+9f77e13b3517fc3226972750a3610faab681652d 0adba9e98eb1bac2cc75a194dfdfe0a4c98a38f5 NinhLe <leninhcn@gmail.com> 1686725333 +0700	commit: Edit my message
+0adba9e98eb1bac2cc75a194dfdfe0a4c98a38f5 899a5a6bdad22816da6f852155f35f75c3095afd NinhLe <leninhcn@gmail.com> 1686729671 +0700	commit: Update
+899a5a6bdad22816da6f852155f35f75c3095afd 681f0dd1667dc291195fe045ba93432f8b74eeba NinhLe <leninhcn@gmail.com> 1686800695 +0700	commit: update di em
+681f0dd1667dc291195fe045ba93432f8b74eeba 681f0dd1667dc291195fe045ba93432f8b74eeba NinhLe <leninhcn@gmail.com> 1686800835 +0700	checkout: moving from master to master
+681f0dd1667dc291195fe045ba93432f8b74eeba 681f0dd1667dc291195fe045ba93432f8b74eeba NinhLe <leninhcn@gmail.com> 1686800891 +0700	checkout: moving from master to testFunc
+681f0dd1667dc291195fe045ba93432f8b74eeba 2849583bd5ed8e603506263dd32b1743b284973b NinhLe <leninhcn@gmail.com> 1686801210 +0700	commit: add new component MyTextBox
+2849583bd5ed8e603506263dd32b1743b284973b 681f0dd1667dc291195fe045ba93432f8b74eeba NinhLe <leninhcn@gmail.com> 1686801331 +0700	checkout: moving from testFunc to master
+681f0dd1667dc291195fe045ba93432f8b74eeba 2849583bd5ed8e603506263dd32b1743b284973b NinhLe <leninhcn@gmail.com> 1686801387 +0700	checkout: moving from master to testFunc
+2849583bd5ed8e603506263dd32b1743b284973b de5c83b7ee09013fc55f1b4886be3e8893271f9c NinhLe <leninhcn@gmail.com> 1686915190 +0700	commit: Modify mytextbox
+de5c83b7ee09013fc55f1b4886be3e8893271f9c ddc530f3f1d3cd01e54a592cd5dc7e412475c300 NinhLe <leninhcn@gmail.com> 1687243941 +0700	commit: update new msgBox
+ddc530f3f1d3cd01e54a592cd5dc7e412475c300 a97377788f283621baaa11f078b2b9e31c2c9bde NinhLe <leninhcn@gmail.com> 1691056676 +0700	commit: update 08/23
+a97377788f283621baaa11f078b2b9e31c2c9bde f168f345b36d16eb763584b5b75b2c3f74006d64 NinhLe <leninhcn@gmail.com> 1691149003 +0700	commit: update new langguage translate
+f168f345b36d16eb763584b5b75b2c3f74006d64 a85230c9ea60c85a864984d771bcf21f143b7f43 NinhLe <leninhcn@gmail.com> 1698629213 +0700	commit: upload new code
+a85230c9ea60c85a864984d771bcf21f143b7f43 681f0dd1667dc291195fe045ba93432f8b74eeba NinhLe <leninhcn@gmail.com> 1698629912 +0700	checkout: moving from testFunc to master
+681f0dd1667dc291195fe045ba93432f8b74eeba a85230c9ea60c85a864984d771bcf21f143b7f43 NinhLe <leninhcn@gmail.com> 1698629939 +0700	merge testFunc: Fast-forward
+a85230c9ea60c85a864984d771bcf21f143b7f43 a85230c9ea60c85a864984d771bcf21f143b7f43 NinhLe <leninhcn@gmail.com> 1698630021 +0700	checkout: moving from master to testFunc
+a85230c9ea60c85a864984d771bcf21f143b7f43 07728c4878f00ba9efacc6fa29af2593db919bf3 NinhLe <leninhcn@gmail.com> 1698888110 +0700	commit: update code for FATP kanban
+07728c4878f00ba9efacc6fa29af2593db919bf3 d6a5b561aee6b0f984380befae9f728285a914b2 NinhLe <leninhcn@gmail.com> 1699000136 +0700	commit: add new code
+d6a5b561aee6b0f984380befae9f728285a914b2 9f50ced6ebfe925e19aea63dfd59bd74eab8e89b NinhLe <leninhcn@gmail.com> 1699349789 +0700	commit: update new code
+9f50ced6ebfe925e19aea63dfd59bd74eab8e89b a85230c9ea60c85a864984d771bcf21f143b7f43 NinhLe <leninhcn@gmail.com> 1699349979 +0700	checkout: moving from testFunc to master
+a85230c9ea60c85a864984d771bcf21f143b7f43 9f50ced6ebfe925e19aea63dfd59bd74eab8e89b NinhLe <leninhcn@gmail.com> 1699350015 +0700	merge testFunc: Fast-forward
+9f50ced6ebfe925e19aea63dfd59bd74eab8e89b 9f50ced6ebfe925e19aea63dfd59bd74eab8e89b NinhLe <leninhcn@gmail.com> 1699350093 +0700	checkout: moving from master to testFunc
+9f50ced6ebfe925e19aea63dfd59bd74eab8e89b f26a808e5d1167fe26f061b09e16a8150e4c5df0 NinhLe <leninhcn@gmail.com> 1700653373 +0700	commit: new code update

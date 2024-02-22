@@ -1,0 +1,1 @@
+{"ast":null,"code":"export default {\n  user: {}\n};","map":{"version":3,"names":["user"],"sources":["D:/LearnVueJS/Vue3/Projects/fa-sop-online/src/store/state.js"],"sourcesContent":["export default {\r\n    user: {\r\n        \r\n      },\r\n  }"],"mappings":"AAAA,eAAe;EACXA,IAAI,EAAE,CAEJ;AACJ,CAAC"},"metadata":{},"sourceType":"module","externalDependencies":[]}
