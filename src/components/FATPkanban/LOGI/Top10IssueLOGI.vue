@@ -23,10 +23,10 @@ export default {
             var lgData = [],
               srData = []
             res.data.data.forEach((el) => {
-              lgData.push(el.DEFECT_CODE)
+              lgData.push(el.DEFECT_DESC)
               srData.push({
                 value: el.QTY,
-                name: el.DEFECT_CODE,
+                name: el.DEFECT_DESC,
                 station: el.PROCESS_NAME,
               })
             })

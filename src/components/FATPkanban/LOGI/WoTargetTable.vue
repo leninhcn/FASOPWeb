@@ -21,7 +21,7 @@
         <tr>
           <td>ICT PN</td>
           <td colspan="2" class="table-info">{{ ictPNASSY }}</td>
-          <td style="min-width: 100px">LOGI PN</td>
+          <td style="min-width: 100px">{{ projectPNName }}</td>
           <td colspan="2" class="table-info">
             <input class="table-info input" type="text" v-model="logiPNASSY" />
           </td>
@@ -55,7 +55,7 @@
         <tr>
           <td>ICT PN</td>
           <td colspan="2" class="table-info">{{ ictPNPacking }}</td>
-          <td style="min-width: 100px">LOGI PN</td>
+          <td style="min-width: 100px">{{ projectPNName }}</td>
           <td colspan="2" class="table-info">
             <input
               class="table-info input"
@@ -99,12 +99,15 @@ export default {
       ictPNPacking: "N/A",
       logiPNASSY: "N/A",
       logiPNPacking: "N/A",
+
+      projectPNName: "LOGI PN",
     }
   },
 
   methods: {
     DataUpdate(model) {
       this.model = model
+      if (this.model.name.includes("NK")) this.projectPNName = "NOKIA PN"
       try {
         this.model.stage = "PACKING"
         this.axios

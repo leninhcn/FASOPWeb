@@ -167,7 +167,7 @@ export default {
       windowResize: false,
       listLine: [],
       YeildDetailSize: 1000,
-      timeNow: "2023/01/01 08:00",
+      timeNow: "2024/01/01 08:00",
       selectAllLine: false,
     }
   },
@@ -205,7 +205,7 @@ export default {
     },
     GetModelList() {
       this.axios
-        .post("/api/FATPKanban/GetModelList", { PRODUCT: "", DB: "BU23" })
+        .post("/api/FATPKanban/GetModelList", { PRODUCT: "LOGI", DB: "BU23" })
         .then((res) => {
           console.log(res)
           if (res.data.status == "OK" && res.data.data.length > 0) {
