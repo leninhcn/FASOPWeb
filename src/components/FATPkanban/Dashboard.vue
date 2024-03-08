@@ -150,10 +150,13 @@ export default {
   },
   unmounted() {
    // clearInterval(this.updateIntID);
+   window.removeEventListener("resize", this.handelResize);
   },
   mounted() {
-    window.addEventListener("resize", () => {
-      if (!this.windowResize) {
+    window.addEventListener("resize", this.handelResize);
+  },
+  methods: {
+    handelResize(){if (!this.windowResize) {
         setTimeout(() => {
           this.windowResize = false;
           if (this.line.name != "Line" && this.line.id != 0) {
@@ -162,9 +165,7 @@ export default {
         }, 1000);
       }
       this.windowResize = true;
-    });
-  },
-  methods: {
+    },
     checkAndUpdateChart() {
       this.windowResize = false;
       console.log("thay doi kich thuoc panel");

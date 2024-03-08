@@ -240,7 +240,6 @@ export default {
             this.ShowEdit = true;
         },
         async submitForm() {
-            console.log(this.edittingSOP);
             if (!this.edittingSOP.sop_Name || !this.edittingSOP.defect_id || !this.edittingSOP.DESCRIPTIONS) {
                 this.$message({
                     showClose: true,

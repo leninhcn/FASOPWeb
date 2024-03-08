@@ -130,12 +130,12 @@
 </template>
 
 <script>
-import WOTable from "./WoTargetTable.vue"
-import StationYield from "./PassRateCommonLOGI.vue"
-import LineTotalRate from "./LineTotalRateLOGI.vue"
-import Top10Issue from "./Top10IssueLOGI.vue"
-import TopByStation from "./TopFailByStationLOGI.vue"
-import { AppFullscreen } from "quasar"
+import WOTable from "./WoTargetTable.vue";
+import StationYield from "./PassRateCommonLOGI.vue";
+import LineTotalRate from "./LineTotalRateLOGI.vue";
+import Top10Issue from "./Top10IssueLOGI.vue";
+import TopByStation from "./TopFailByStationLOGI.vue";
+import { AppFullscreen } from "quasar";
 
 export default {
   name: "dash-board",
@@ -169,92 +169,94 @@ export default {
       YeildDetailSize: 1000,
       timeNow: "2024/01/01 08:00",
       selectAllLine: false,
-    }
+    };
   },
   unmounted() {
     // clearInterval(this.updateIntID);
+    window.removeEventListener("resize", this.handelResize);
   },
   mounted() {
     //get model list
-    this.GetModelList()
+    this.GetModelList();
     setInterval(() => {
-      this.updateTime()
-    }, 60000)
-    window.addEventListener("resize", () => {
-      this.updateTime()
-      if (!this.windowResize) {
-        setTimeout(() => {
-          this.windowResize = false
-          if (this.listLine != undefined) {
-            this.UpdateChart({ PDLINE_ID: this.listLine, DB: this.model.DB })
-          }
-        }, 1000)
-      }
-      this.windowResize = true
-    })
+      this.updateTime();
+    }, 60000);
+    window.addEventListener("resize", this.handelResize);
   },
   methods: {
+    handelResize() {
+      this.updateTime();
+      if (!this.windowResize) {
+        setTimeout(() => {
+          this.windowResize = false;
+          if (this.listLine != undefined) {
+            this.UpdateChart({ PDLINE_ID: this.listLine, DB: this.model.DB });
+          }
+        }, 1000);
+      }
+      this.windowResize = true;
+    },
     onSelectAllLineChanged(v) {
-      this.listLine = []
+      this.listLine = [];
       if (v) {
         this.lines.forEach((element) => {
-          this.listLine.push(element.id)
-        })
+          this.listLine.push(element.id);
+        });
       }
-      console.log(this.listLine)
+      console.log(this.listLine);
     },
     GetModelList() {
       this.axios
         .post("/api/FATPKanban/GetModelList", { PRODUCT: "LOGI", DB: "BU23" })
         .then((res) => {
-          console.log(res)
+          console.log(res);
           if (res.data.status == "OK" && res.data.data.length > 0) {
-            this.models = []
+            this.models = [];
             res.data.data.forEach((element) => {
               this.models.push({
                 name: element.model,
                 modelName: element.modelName,
                 DB: "BU23",
-              })
-            })
+              });
+            });
           }
-        })
+        });
     },
     updateTime() {
       // Lấy thời gian hiện tại
-      let currentDate = new Date()
+      let currentDate = new Date();
 
       // Format thời gian theo định dạng yyyy/mm/dd hh:mm:ss
-      let year = currentDate.getFullYear()
-      let month = String(currentDate.getMonth() + 1).padStart(2, "0")
-      let day = String(currentDate.getDate()).padStart(2, "0")
-      let hours = String(currentDate.getHours()).padStart(2, "0")
-      let minutes = String(currentDate.getMinutes()).padStart(2, "0")
+      let year = currentDate.getFullYear();
+      let month = String(currentDate.getMonth() + 1).padStart(2, "0");
+      let day = String(currentDate.getDate()).padStart(2, "0");
+      let hours = String(currentDate.getHours()).padStart(2, "0");
+      let minutes = String(currentDate.getMinutes()).padStart(2, "0");
       //let seconds = String(currentDate.getSeconds()).padStart(2, "0")
 
       // Hiển thị thời gian trong div
-      this.timeNow = `${year}/${month}/${day} ${hours}:${minutes}`
+      this.timeNow = `${year}/${month}/${day} ${hours}:${minutes}`;
     },
 
     checkAndUpdateChart() {
-      this.windowResize = false
-      console.log("thay doi kich thuoc panel")
+      this.windowResize = false;
+      console.log("thay doi kich thuoc panel");
       if (this.listLine != undefined) {
-        this.UpdateChart({ PDLINE_ID: this.listLine, DB: this.model.DB })
+        this.UpdateChart({ PDLINE_ID: this.listLine, DB: this.model.DB });
       }
     },
     async countDownUpdate() {
-      if (this.countDown) return
-      this.countDown = true
-      let dem = Math.ceil(this.refreshTime / 1000)
+      if (this.countDown) return;
+      this.countDown = true;
+      let dem = Math.ceil(this.refreshTime / 1000);
       while (this.refreshTime > 1000) {
-        this.timeRemain = dem / (this.refreshTime / 1000)
-        await new Promise((resol) => setTimeout(resol, 1000))
-        dem--
+        this.timeRemain = dem / (this.refreshTime / 1000);
+        await new Promise((resol) => setTimeout(resol, 1000));
+        dem--;
         if (this.timeRemain <= 0) {
-          dem = Math.ceil(this.refreshTime / 1000)
+          dem = Math.ceil(this.refreshTime / 1000);
           if (this.listLine != undefined) {
-            this.UpdateChart({ PDLINE_ID: this.listLine, DB: this.model.DB })
+            this.UpdateChart({ PDLINE_ID: this.listLine, DB: this.model.DB });
           }
         }
       }
@@ -262,45 +264,45 @@ export default {
     btnArrowClick() {
       if (this.ctlBarSize.witdh > 0) {
         if (this.ctlMenu) {
-          this.$refs.ctlBar.style.left = "0px"
+          this.$refs.ctlBar.style.left = "0px";
           setTimeout(() => {
             if (!this.ctlMenu) {
-              this.ctlMenu = !this.ctlMenu
+              this.ctlMenu = !this.ctlMenu;
               this.$refs.ctlBar.style.left = `-${
                 this.ctlBarSize.witdh - this.$refs.btnArrow.clientWidth
-              }px`
+              }px`;
             }
-          }, 60000)
+          }, 60000);
         } else {
           this.$refs.ctlBar.style.left = `-${
             this.ctlBarSize.witdh - this.$refs.btnArrow.clientWidth
-          }px`
+          }px`;
         }
       } else {
         if (this.ctlMenu) {
-          this.$refs.ctlBar.style.left = "0px"
+          this.$refs.ctlBar.style.left = "0px";
           setTimeout(() => {
             if (!this.ctlMenu) {
-              this.ctlMenu = !this.ctlMenu
-              this.$refs.ctlBar.style.left = `-230px`
+              this.ctlMenu = !this.ctlMenu;
+              this.$refs.ctlBar.style.left = `-230px`;
             }
-          }, 60000)
+          }, 60000);
         } else {
-          this.$refs.ctlBar.style.left = `-230px`
+          this.$refs.ctlBar.style.left = `-230px`;
         }
       }
 
-      this.ctlMenu = !this.ctlMenu
+      this.ctlMenu = !this.ctlMenu;
     },
     ChangeModel(el) {
-      this.model = el
+      this.model = el;
       setTimeout(() => {
         this.ctlBarSize = {
           witdh: this.$refs.ctlBar.clientWidth,
           height: this.$refs.ctlBar.clientHeight,
-        }
-      }, 200)
-      this.getAllLine(el)
+        };
+      }, 200);
+      this.getAllLine(el);
     },
     getAllLine(model) {
       this.axios
@@ -310,57 +312,57 @@ export default {
         })
         .then((res) => {
           if (res.data.status == "OK") {
-            this.lines = []
+            this.lines = [];
             res.data.data.forEach((el) => {
               this.lines.push({
                 name: el.PDLINE_NAME,
                 id: el.PDLINE_ID,
-              })
-            })
+              });
+            });
           }
         })
         .catch((err) => {
-          console.log(err)
-        })
+          console.log(err);
+        });
     },
     onLineChanged(val) {
       //this.listLine = [100048, 100063, 100050, 100062, 100051, 100058, 100052]
-      localStorage.setItem("CurrentLine", val)
-      this.listLine = val
+      localStorage.setItem("CurrentLine", val);
+      this.listLine = val;
       setTimeout(() => {
         this.ctlBarSize = {
           witdh: this.$refs.ctlBar.clientWidth,
           height: this.$refs.ctlBar.clientHeight,
-        }
-      }, 200)
-      this.UpdateChart({ PDLINE_ID: this.listLine, DB: this.model.DB })
-      this.countDownUpdate()
+        };
+      }, 200);
+      this.UpdateChart({ PDLINE_ID: this.listLine, DB: this.model.DB });
+      this.countDownUpdate();
     },
     UpdateChart(iLine) {
-      iLine.name = this.model.name
-      iLine.modelName = this.model.modelName
-      console.log("iline: ", iLine)
+      iLine.name = this.model.name;
+      iLine.modelName = this.model.modelName;
+      console.log("iline: ", iLine);
       if (iLine.PDLINE_ID.length <= 0) {
-        console.log("CHƯA CHỌN LINE")
-        alert("Chưa chọn line")
+        console.log("CHƯA CHỌN LINE");
+        alert("Chưa chọn line");
       } else {
-        this.$refs.WoTable.DataUpdate(iLine)
-        this.$refs.LineTotalRate.DataUpdate(iLine)
-        this.$refs.StationYield.DataUpdate(iLine)
-        this.$refs.Top10Issue.DataUpdate(iLine)
-        this.$refs.TopByStation.DataUpdate(iLine)
+        this.$refs.WoTable.DataUpdate(iLine);
+        this.$refs.LineTotalRate.DataUpdate(iLine);
+        this.$refs.StationYield.DataUpdate(iLine);
+        this.$refs.Top10Issue.DataUpdate(iLine);
+        this.$refs.TopByStation.DataUpdate(iLine);
       }
     },
     toggle() {
       if (!this.fullScreen) {
-        AppFullscreen.request(this.$refs.mainPn)
+        AppFullscreen.request(this.$refs.mainPn);
       } else {
-        AppFullscreen.exit()
+        AppFullscreen.exit();
       }
-      this.fullScreen = !this.fullScreen
+      this.fullScreen = !this.fullScreen;
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
