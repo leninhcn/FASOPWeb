@@ -1,88 +1,88 @@
 <template>
   <div class="container">
-    <tr>
-      <td style="width: 100%">
-        <div>
-          <div class="header">
-            <div class="ReaportTitle">FA WIP</div>
-            <div class="row">
-              <div
-                style="padding-top: 20px; text-align: left; margin-left: 10px"
-                class="col-10"
-              >
-                Start Time: 2024/01/01 00:00:00
-              </div>
-              <div class="col">
-                <q-select
-                  v-model="currentModel"
-                  :options="models"
-                  label="Model"
-                  dense
-                ></q-select>
-              </div>
+    <div class="row">
+      <div class="col-5">
+        <div class="header">
+          <div class="ReaportTitle">FA WIP</div>
+          <div class="row">
+            <div
+              style="padding-top: 20px; text-align: left; margin-left: 10px"
+              class="col-10"
+            >
+              Start Time: 2024/01/01 00:00:00
+            </div>
+            <div class="col">
+              <q-select
+                v-model="currentModel"
+                :options="models"
+                label="Model"
+                dense
+                @update:model-value="ChangeModel"
+              ></q-select>
             </div>
           </div>
-          <div class="divRateDetails">
-            <table>
-              <thead>
-                <tr>
-                  <th>Duration</th>
-                  <th>Checkin</th>
-                  <th>Checkout</th>
-                  <th>Wip</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="(row, id) in rateDtRows"
-                  :key="id"
-                  @click="Rowclick(row)"
-                >
-                  <td>{{ row.duration }}</td>
-                  <td>{{ row.checkinQty }}</td>
-                  <td>{{ row.checkoutQty }}</td>
-                  <td>{{ row.checkinQty - row.checkoutQty }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
         </div>
-      </td>
-      <td style="position: relative">
-        <div style="position: absolute; top: 70px; left: 0; width: 800px">
-          <WipPie style="margin-top: 20px; margin-left: 10px"></WipPie>
+        <div class="divRateDetails">
+          <table>
+            <thead>
+              <tr>
+                <th>Duration</th>
+                <th>Checkin</th>
+                <th>Checkout</th>
+                <th>Wip</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(row, id) in rateDtRows"
+                :key="id"
+                @click="Rowclick(row)"
+              >
+                <td>{{ row.duration }}</td>
+                <td>{{ row.checkinQty }}</td>
+                <td>{{ row.checkoutQty }}</td>
+                <td>{{ row.checkinQty - row.checkoutQty }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      </td>
-    </tr>
-    <tr>
-      <td>
+      </div>
+      <div class="col">
+        <div style="min-width: 550px">
+          <WipPie ref="pieChart"></WipPie>
+        </div>
+      </div>
+    </div>
+    <div class="row tabSN">
+      <div class="col-5">
         <div class="divSnDetails">
-          <div class="q-pa-md">
-            <q-table
-              title="SN Details"
-              :rows="snDetails"
-              :columns="columns"
-              row-key="name"
-            />
-          </div>
+          <q-table
+            title="SN Details"
+            :rows="snDetails"
+            :columns="columns"
+            row-key="name"
+          />
         </div>
-      </td>
-      <td>
-        <div style="width: 800px; background-color: chartreuse">okokkoko</div>
-      </td>
-    </tr>
+      </div>
+      <div class="col">
+        <div style="min-width: 550px">
+          <WipBar ref="barChart"></WipBar>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import WipPie from "./RateChart/piechart.vue";
-
+import WipBar from "./RateChart/barchart.vue";
 export default {
   mounted() {
     console.log("chan lam co");
   },
   components: {
     WipPie,
+    WipBar,
   },
   data() {
     return {
@@ -112,13 +112,13 @@ export default {
         {
           serial_number: "SN1",
           Error_code: "Error001",
-          checkinTime: "checkinTime",
-          checkoutTime: "checkoutTime",
+          checkin_time: "checkinTime",
+          checkout_time: "checkoutTime",
           repair_emp: "91023991",
           repair_method: "dap bo",
         },
       ],
-      qtbColumns:[],
+      qtbColumns: [],
       models: ["ER002", "ER003", "ER004"],
       currentModel: "None",
     };
@@ -126,6 +126,11 @@ export default {
   methods: {
     Rowclick(row) {
       console.log(row);
+    },
+    ChangeModel(model) {
+      console.log(model);
+      this.$refs.pieChart.DataUpdate();
+      this.$refs.barChart.DataUpdate();
     },
   },
 };
@@ -142,12 +147,22 @@ export default {
     bottom: 20px;
   }
 }
+.tabSN {
+  margin: {
+    top: 10px;
+  }
+}
+
 .container {
+  position: relative;
   width: 103%;
-  background-color: azure;
+  background-color: rgb(232, 247, 247);
   margin: {
     top: -20px;
     left: -20px;
+  }
+  padding: {
+    left: 10px;
   }
 }
 .divRateDetails {
@@ -172,5 +187,8 @@ export default {
   tbody tr:hover {
     background-color: #9ffcfc;
   }
+}
+.divSnDetails {
+  padding: 5px;
 }
 </style>

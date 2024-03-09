@@ -12,7 +12,7 @@ export default function GetOption() {
             text: 'REPAIR RATE OVER TIME',
             // subtext: 'Current 1~2 hours',
             textStyle: { color: '#0000ff' },
-            y: 10,
+            y: 20,
             x: 'center'
         },
         tooltip: {
@@ -21,52 +21,16 @@ export default function GetOption() {
         },
         legend: {
             data: ['Checkout', 'Wip'],
-            bottom: 10
+            top: 40,
+            left:780
           },
-        calculable: true,
-        // graphic: [{
-        //     type: "text",
-        //     style: {
-        //       text: '24H',
-        //       x: 105,
-        //       y: 170,
-        //       fill: "#00f",
-        //       font: "bold 14px verdana",
-        //     },
-        //   },{
-        //     type: "text",
-        //     style: {
-        //       text: '48H',
-        //       x: 305,
-        //       y: 170,
-        //       fill: "#00f",
-        //       font: "bold 14px verdana",
-        //     },
-        //   },{
-        //     type: "text",
-        //     style: {
-        //       text: '72H',
-        //       x: 505,
-        //       y: 170,
-        //       fill: "#00f",
-        //       font: "bold 14px verdana",
-        //     },
-        //   },{
-        //     type: "text",
-        //     style: {
-        //       text: '>72H',
-        //       x: 660,
-        //       y: 170,
-        //       fill: "#00f",
-        //       font: "bold 14px verdana",
-        //     },
-        //   }],
+        calculable: true,        
         series: [
             {
                 name: '',
                 type: 'pie',
-                radius: '45%',
-                center: ['15%', '45%'],
+                radius: '50%',
+                center: ['15%', '60%'],
                 color: colors,
                 label: {
                     normal: {
@@ -89,8 +53,8 @@ export default function GetOption() {
             {
                 name: '',
                 type: 'pie',
-                radius: '45%',
-                center: ['40%', '45%'],
+                radius: '50%',
+                center: ['38%', '60%'],
                 label: {
                     normal: {
                         formatter: '{c}',
@@ -112,8 +76,8 @@ export default function GetOption() {
             , {
                 name: '',
                 type: 'pie',
-                radius: '45%',
-                center: ['65%', '45%'],
+                radius: '50%',
+                center: ['62%', '60%'],
                 label: {
                     normal: {
                         formatter: '{c}',
@@ -135,8 +99,8 @@ export default function GetOption() {
             , {
                 name: '',
                 type: 'pie',
-                radius: '45%',
-                center: ['88%', '45%'],
+                radius: '50%',
+                center: ['85%', '60%'],
                 label: {
                     normal: {
                         formatter: '{c}',

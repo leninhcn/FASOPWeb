@@ -40,69 +40,11 @@ export default {
     window.addEventListener("resize", this.myChart.resize);
   },
   methods: {
-    getChartData(iData) {
-      const data = [];
-      for (let id = 0; id < iData.length; id++) {
-        const el = iData[id];
-        data.push({ value: el.QTY, name: el.DEFECT_CODE });
-      }
-      return data;
-    },
-    addgraphic(value, xx, yy) {
-      var res = {
-        type: "text",
-        style: {
-          text: value,
-          x: xx,
-          y: yy,
-          fill: "#FFF",
-          //fontSize: 25,
-          font: "bold 16px verdana",
-        },
-      };
-      return res;
-    },
-    DataUpdate(iLine) {
+    DataUpdate(data) {
+      console.log(data);
       this.myChart.clear();
-      this.axios
-        .post("api/FATPKanban/GetTOP5FailByStation", iLine)
-        .then((res) => {
-          if (res.data.status == "OK") {
-            const sr = [];
-            const grap = [];
-            for (let i = 0; i < res.data.data.DATA.length; i++) {
-              const el = res.data.data.DATA[i];
-              const xx = (i * 20 + 10) * (this.myChart.getWidth() / 100); //i * 245 + 100;
-              grap.push(this.addgraphic(el.PROCESS_NAME, xx - i * 5, 250));
-              sr.push({
-                name: el.PROCESS_NAME,
-                type: "pie",
-                radius: "45%",
-                center: [`${i * 20 + 10}%`, "45%"],
-                color: this.colors,
-                label: {
-                  normal: {
-                    formatter: "{b}:{c}",
-                    show: true,
-                    position: "outside",
-                  },
-                },
-                labelLine: {
-                  normal: {
-                    show: true,
-                  },
-                },
-                data: this.getChartData(el.INFO),
-              });
-            }
-            this.option.series = sr;
-            this.option.graphic = grap;
-            this.myChart.setOption(this.option);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      this.option.series[0].data[0].value += 10;
+      this.myChart.setOption(this.option);
     },
   },
 };
@@ -110,31 +52,31 @@ export default {
 
 <style lang="scss" scoped>
 #ecircle {
-  height: 25vh;
+  height: 30vh;
   width: 100%;
   overflow: hidden;
 }
 .divPieName {
   position: absolute;
-  top: 70%;
+  top: 32%;
   span {
     margin: {
-      left: 110px;
+      left: 140px;
     }
     font-size: 14px;
     color: blue;
     font-weight: bold;
   }
   span:nth-child(2) {
-    margin-left: 170px;
+    margin-left: 207px;
   }
 
   span:nth-child(3) {
-    margin-left: 175px;
+    margin-left: 220px;
   }
 
   span:nth-child(4) {
-    margin-left: 155px;
+    margin-left: 205px;
   }
 }
 </style>

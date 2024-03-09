@@ -17,7 +17,7 @@
     "core-js": "^3.8.3",
     "dat.gui": "^0.7.9",
     "dayjs": "^1.11.7",
-    "echarts": "^5.4.3",
+    "echarts": "^5.5.0",
     "element-plus": "^2.3.1",
     "flag-icons": "^6.6.6",
     "iconfont-vue3": "^1.0.0",
