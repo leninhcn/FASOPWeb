@@ -41,9 +41,23 @@ export default {
   },
   methods: {
     DataUpdate(data) {
-      console.log(data);
-      this.myChart.clear();
-      this.option.series[0].data[0].value += 10;
+      // this.myChart.clear();
+      this.option.series[0].data = [
+        { value: data[0].RepairedQty, name: "Checkout" },
+        { value: data[0].UnRepairedQty, name: "Wip" },
+      ];
+      this.option.series[1].data = [
+        { value: data[1].RepairedQty, name: "Checkout" },
+        { value: data[1].UnRepairedQty, name: "Wip" },
+      ];
+      this.option.series[2].data = [
+        { value: data[2].RepairedQty, name: "Checkout" },
+        { value: data[2].UnRepairedQty, name: "Wip" },
+      ];
+      this.option.series[3].data = [
+        { value: data[3].RepairedQty, name: "Checkout" },
+        { value: data[3].UnRepairedQty, name: "Wip" },
+      ];
       this.myChart.setOption(this.option);
     },
   },

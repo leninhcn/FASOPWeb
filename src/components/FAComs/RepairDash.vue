@@ -3,11 +3,11 @@
     <div class="row">
       <div class="col-5">
         <div class="header">
-          <div class="ReaportTitle">FA WIP</div>
+          <div class="ReaportTitle">{{ rpTitle }}</div>
           <div class="row">
             <div
               style="padding-top: 20px; text-align: left; margin-left: 10px"
-              class="col-10"
+              class="col-9"
             >
               Start Time: 2024/01/01 00:00:00
             </div>
@@ -18,7 +18,19 @@
                 label="Model"
                 dense
                 @update:model-value="ChangeModel"
+                style="min-width: 80px"
               ></q-select>
+            </div>
+            <div class="col">
+              <q-btn
+                flat
+                dense
+                round
+                color="secondary"
+                icon="sync"
+                style="margin-top: 10px; margin-left: 10px"
+                @click="ReloadData"
+              />
             </div>
           </div>
         </div>
@@ -38,10 +50,10 @@
                 :key="id"
                 @click="Rowclick(row)"
               >
-                <td>{{ row.duration }}</td>
-                <td>{{ row.checkinQty }}</td>
-                <td>{{ row.checkoutQty }}</td>
-                <td>{{ row.checkinQty - row.checkoutQty }}</td>
+                <td>{{ row.Duration }}</td>
+                <td>{{ row.CheckInQty }}</td>
+                <td>{{ row.RepairedQty }}</td>
+                <td>{{ row.UnRepairedQty }}</td>
               </tr>
             </tbody>
           </table>
@@ -57,28 +69,69 @@
       <div class="col-5">
         <div class="divSnDetails">
           <q-table
-            title="SN Details"
-            :rows="snDetails"
-            :columns="columns"
+            :title="tbTitle"
+            :rows="SNs"
             row-key="name"
-          />
+            flat
+            style="height: 60vh; margin-bottom: 30px"
+            virtual-scroll
+            :pagination="initialPagination"
+          >
+            <template v-slot:top-right>
+              <div class="row">
+                <div class="col">
+                  <q-select
+                    v-model="snStatus"
+                    :options="RPStatus"
+                    label="Status"
+                    dense
+                    @update:model-value="ChangeStatus"
+                    style="min-width: 80px"
+                  ></q-select>
+                </div>
+                <div class="col">
+                  <q-btn
+                    flat
+                    dense
+                    round
+                    color="secondary"
+                    icon="download"
+                    style="margin-top: 10px; margin-left: 15px"
+                    @click="ExportData"
+                  />
+                </div>
+              </div>
+            </template>
+          </q-table>
+          <q-inner-loading :showing="tbLoading">
+            <q-spinner-ball size="70px" color="deep-orange" />
+          </q-inner-loading>
         </div>
       </div>
       <div class="col">
-        <div style="min-width: 550px">
+        <div style="min-width: 550px; margin-top: 20px">
           <WipBar ref="barChart"></WipBar>
         </div>
       </div>
     </div>
+    <q-inner-loading :showing="dataLoading">
+      <q-spinner-ball size="80px" color="deep-orange" />
+    </q-inner-loading>
   </div>
 </template>
 
 <script>
 import WipPie from "./RateChart/piechart.vue";
 import WipBar from "./RateChart/barchart.vue";
+import * as xlsx from "xlsx";
 export default {
   mounted() {
-    console.log("chan lam co");
+    const ssModel = sessionStorage.getItem("FAkanbanModel");
+    if (ssModel && ssModel.length > 2) {
+      this.currentModel = ssModel;
+      this.ChangeModel(this.currentModel);
+    }    
+    this.GetModel();
   },
   components: {
     WipPie,
@@ -86,51 +139,166 @@ export default {
   },
   data() {
     return {
+      rpTitle: "FA WIP",
+      tbLoading: false,
       rateDtRows: [
         {
-          duration: "24h",
-          checkinQty: 100,
-          checkoutQty: 40,
+          Duration: "24H",
+          CheckInQty: 0,
+          RepairedQty: 0,
+          UnRepairedQty: 0,
         },
         {
-          duration: "48h",
-          checkinQty: 300,
-          checkoutQty: 120,
+          Duration: "48H",
+          CheckInQty: 0,
+          RepairedQty: 0,
+          UnRepairedQty: 0,
         },
         {
-          duration: "72h",
-          checkinQty: 500,
-          checkoutQty: 340,
+          Duration: "72H",
+          CheckInQty: 0,
+          RepairedQty: 0,
+          UnRepairedQty: 0,
         },
         {
-          duration: ">72h",
-          checkinQty: 1500,
-          checkoutQty: 1340,
+          Duration: ">72H",
+          CheckInQty: 0,
+          RepairedQty: 0,
+          UnRepairedQty: 0,
         },
       ],
-      snDetails: [
-        {
-          serial_number: "SN1",
-          Error_code: "Error001",
-          checkin_time: "checkinTime",
-          checkout_time: "checkoutTime",
-          repair_emp: "91023991",
-          repair_method: "dap bo",
-        },
-      ],
+      snDetails: [],
+      SNs: [],
       qtbColumns: [],
       models: ["ER002", "ER003", "ER004"],
+      snStatus: "All",
+      RPStatus: ["All", "Repaired", "Wip"],
       currentModel: "None",
+      initialPagination: {
+        sortBy: "desc",
+        descending: false,
+        page: 1,
+        rowsPerPage: 10,
+        // rowsNumber: xx if getting data from a server
+      },
+      tbTitle: "Defect List",
+      dataLoading: false,
     };
   },
   methods: {
+    GetModel() {
+      this.axios
+        .get("api/FAReport/GetModel")
+        .then((res) => {
+          this.models = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    ChangeStatus(stt) {
+      switch (stt) {
+        case "All":
+          this.SNs = this.snDetails;
+          break;
+        case "Repaired":
+          this.SNs = this.snDetails.filter(
+            (item) => item.OUT_REPAIR_TIME != null
+          );
+          break;
+        case "Wip":
+          this.SNs = this.snDetails.filter(
+            (item) => item.OUT_REPAIR_TIME == null
+          );
+          break;
+        default:
+          this.SNs = this.snDetails;
+          break;
+      }
+    },
+    ExportData() {
+      const workbook = xlsx.utils.book_new();
+
+      // Chuyển đổi mảng thành một bảng dữ liệu
+      const worksheet = xlsx.utils.json_to_sheet(this.SNs);
+
+      // Thêm bảng dữ liệu vào workbook
+      xlsx.utils.book_append_sheet(workbook, worksheet, "Data");
+
+      // Tạo một tệp Excel
+      const excelFileName = "fawip.xlsx";
+      xlsx.writeFile(workbook, excelFileName);
+    },
     Rowclick(row) {
-      console.log(row);
+      if (this.currentModel != "None" && !this.tbLoading)
+        this.GetSNList(this.currentModel, row.Duration);
+    },
+    GetSNList(model, duration) {
+      this.tbLoading = true;
+      this.tbTitle = `Defect List (${duration})`;
+      this.axios
+        .get(`api/FAReport/GetRepairList?model=${model}&duration=${duration}`)
+        .then((res) => {
+          if (res.status == 200) {
+            this.snDetails = res.data;
+            this.ChangeStatus(this.snStatus);
+          } else
+            this.$message({
+              showClose: true,
+              type: "error",
+              message: res.data,
+            });
+        })
+        .catch((err) => {
+          this.$message({
+            showClose: true,
+            type: "error",
+            message: JSON.stringify(err),
+          });
+        })
+        .finally(() => {
+          this.tbLoading = false;
+        });
+    },
+    ReloadData() {
+      if (!this.currentModel.includes("None") && !this.dataLoading) {
+        this.ChangeModel(this.currentModel);
+      }
     },
     ChangeModel(model) {
-      console.log(model);
-      this.$refs.pieChart.DataUpdate();
-      this.$refs.barChart.DataUpdate();
+      this.dataLoading = true;
+      sessionStorage.setItem("FAkanbanModel", model);
+      this.rpTitle = `${model} FA WIP`;
+      this.SNs = [];
+      this.axios
+        .get(`api/FAReport/GetWip?model=${model}`)
+        .then((res) => {
+          console.log(res.data);
+          if (res.status == 200) {
+            this.rateDtRows = res.data;
+            for (let index = 0; index < this.rateDtRows.length; index++) {
+              if (this.rateDtRows[index].CheckInQty > 0) {
+                this.GetSNList(model, this.rateDtRows[index].Duration);
+                break;
+              }
+            }
+            this.$refs.pieChart.DataUpdate(this.rateDtRows);
+            this.$refs.barChart.DataUpdate(this.rateDtRows);
+          } else
+            this.$message({
+              showClose: true,
+              type: "error",
+              message: res.data,
+            });
+        })
+        .catch((err) => {
+          this.$message({
+            showClose: true,
+            type: "error",
+            message: err.message,
+          });
+        })
+        .finally(() => (this.dataLoading = false));
     },
   },
 };
@@ -190,5 +358,6 @@ export default {
 }
 .divSnDetails {
   padding: 5px;
+  position: relative;
 }
 </style>

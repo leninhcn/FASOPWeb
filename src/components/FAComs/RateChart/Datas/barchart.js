@@ -51,7 +51,7 @@ export default function GetOption() {
               emphasis: {
                 focus: 'series'
               },
-              data: [320, 332, 301, 334]
+              data: [0, 0, 0, 0]
             },
             {
               name: 'Checkout',
@@ -60,7 +60,7 @@ export default function GetOption() {
               emphasis: {
                 focus: 'series'
               },
-              data: [220, 182, 191, 234]
+              data: [0, 0, 0, 0]
             },
             {
               name: 'Wip',
@@ -69,7 +69,7 @@ export default function GetOption() {
               emphasis: {
                 focus: 'series'
               },
-              data: [150, 232, 201, 154]
+              data: [0, 0, 0, 0]
             }
           ]
     };

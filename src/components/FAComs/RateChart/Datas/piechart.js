@@ -46,8 +46,8 @@ export default function GetOption() {
                     }
                 },
                 data: [
-                    { value: 40, name: 'Checkout' },
-                    { value: 60, name: 'Wip' }
+                    { value: 0, name: 'Checkout' },
+                    { value: 0, name: 'Wip' }
                 ]
             },
             {
@@ -69,8 +69,8 @@ export default function GetOption() {
                     }
                 },
                 data: [
-                    { value: 120, name: 'Checkout' },
-                    { value: 180, name: 'Wip' }
+                    { value: 0, name: 'Checkout' },
+                    { value: 0, name: 'Wip' }
                 ]
             }
             , {
@@ -92,8 +92,8 @@ export default function GetOption() {
                     }
                 },
                 data: [
-                    { value: 340, name: 'Checkout' },
-                    { value: 230, name: 'Wip' }
+                    { value: 0, name: 'Checkout' },
+                    { value: 0, name: 'Wip' }
                 ]
             }
             , {
@@ -115,8 +115,8 @@ export default function GetOption() {
                     }
                 },
                 data: [
-                    { value: 1340, name: 'Checkout' },
-                    { value: 160, name: 'Wip' }
+                    { value: 0, name: 'Checkout' },
+                    { value: 0, name: 'Wip' }
                 ]
             }
         ]

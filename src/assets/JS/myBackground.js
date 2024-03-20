@@ -117,13 +117,6 @@ function RunIntro(canvasID) {
 
     canvas = document.getElementById(canvasID);
     ctx = canvas.getContext('2d');
-    // var gui;
-    // gui = new dat.GUI();
-    // gui.add(params, 'maxDistFromCursor').min(0).max(100).step(10).name('Size');
-    // gui.add(params, 'dotsSpeed').min(0).max(100).step(.5).name('Speed');
-    // gui.add(params, 'backgroundSpeed').min(0).max(150).step(1).name('Sky speed');
-    // gui.open();
-
     setCanvasSize();
     init();
 }
